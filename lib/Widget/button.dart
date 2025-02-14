@@ -1,13 +1,12 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class button extends StatelessWidget {
   String text;
   Color ? color;
-  Color ? textColor;
   final VoidCallback onTab;
-  button({
-    super.key,
-    required this.text,this.color,this.textColor, required this.onTab
+   button({
+    super.key, required this.text,this.color, required this.onTab
   });
 
   @override
@@ -23,7 +22,7 @@ class button extends StatelessWidget {
                     borderRadius: BorderRadius.circular(8)
                 )
             ),
-            child: Text(text,style:TextStyle(color: textColor ?? Colors.white,fontSize: 20),)),
+            child: Text(text,style: TextStyle(color: Colors.white,fontSize: 20),)),
       ),
     );
   }
