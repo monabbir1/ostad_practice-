@@ -10,26 +10,26 @@ class Watertraker extends StatefulWidget {
 }
 
 class _WatertrakerState extends State<Watertraker> {
-  final int goal = 2000;
+  @override
+  int _tekeWater = 0;
+  final int _goal = 2000;
 
-  int _takeWater = 0;
-
-  void _addWater(int amount){
+  void _addWater (int amount){
     setState(() {
-      if( _takeWater <goal){
-        _takeWater = (_takeWater+amount).clamp(0, goal);
+      if(_tekeWater <_goal){
+        _tekeWater = (_tekeWater+amount).clamp(0, _goal);
       }
     });
   }
-  void _reset(){
+  void _reset (){
     setState(() {
-      _takeWater = 0;
+      _tekeWater = 0;
     });
   }
 
-  @override
+@override
   Widget build(BuildContext context) {
-    double progres = (_takeWater / goal).clamp(0.0, 1.0);
+    double progress = (_tekeWater/_goal).clamp(0.0, 1.0);
     return Scaffold(
       appBar: AppBar(
         title: Text('Water Track'),
@@ -58,7 +58,7 @@ class _WatertrakerState extends State<Watertraker> {
                     style: TextStyle(fontWeight: FontWeight.w600, fontSize: 20),
                   ),
                   Text(
-                    "${_takeWater} ml",
+                    "${_tekeWater} ml",
                     style: TextStyle(
                         fontWeight: FontWeight.w600,
                         fontSize: 20,
@@ -77,14 +77,14 @@ class _WatertrakerState extends State<Watertraker> {
                   width: 130,
                   height: 130,
                   child: CircularProgressIndicator(
-                    value: progres,
+                    value: 1,
                     color: Colors.blue,
                     backgroundColor: Colors.grey[400],
                     strokeWidth: 10,
                   ),
                 ),
                 Text(
-                  "${(progres * 100).toInt()}%",
+                  "${(progress * 100).toInt()}%",
                   style: TextStyle(fontSize: 30, fontWeight: FontWeight.w600),
                 )
               ],
@@ -100,11 +100,11 @@ class _WatertrakerState extends State<Watertraker> {
                 ),
                 waterBtn(
                   buttonName: '100',
-                  icon: Icons.local_drink, onTab:()=> _addWater(100)
+                  icon: Icons.local_drink,onTab:()=> _addWater(100)
                 ),
                 waterBtn(
                   buttonName: '50',
-                  icon: Icons.local_drink, onTab:()=> _addWater(50)
+                  icon: Icons.local_drink,onTab:()=> _addWater(50)
                 ),
               ],
             ),
