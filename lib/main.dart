@@ -92,7 +92,6 @@ class _HomeState extends State<Home> {
               button(text: '9', onTab:()=> ButtonPressed('9'),),
               button(
                 text: '/',
-                textColor: Colors.black,
                 color: Colors.amber,onTab:()=> ButtonPressed('/'),
               ),
             ],
@@ -104,7 +103,6 @@ class _HomeState extends State<Home> {
               button(text: '6', onTab:()=> ButtonPressed('6'),),
               button(
                 text: 'x',
-                textColor: Colors.black,
                 color: Colors.amber, onTab:()=> ButtonPressed('*'),
               ),
             ],
@@ -116,7 +114,6 @@ class _HomeState extends State<Home> {
               button(text: '3', onTab:()=> ButtonPressed('3'),),
               button(
                 text: '-',
-                textColor: Colors.black,
                 color: Colors.amber, onTab:()=> ButtonPressed('-'),
               ),
             ],
@@ -134,7 +131,6 @@ class _HomeState extends State<Home> {
               ),
               button(
                 text: '+', onTab:()=> ButtonPressed('+'),
-                textColor: Colors.black,
                 color: Colors.amber,
               ),
             ],
