@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:ostad_prac/Widget/expence.dart';
 import 'package:intl/intl.dart';
+import 'package:ostad_prac/Widget/expence.dart';
 
 class Expesetrakar extends StatefulWidget {
   const Expesetrakar({super.key});
@@ -11,22 +11,15 @@ class Expesetrakar extends StatefulWidget {
 }
 
 class _ExpesetrakarState extends State<Expesetrakar> {
-  final List<Expense> _expense = [];
-  final List<String> _category = ['Food','Transport','Entertainment','Gym'];
+  List<Expense> _expense = [];
+  List<String> _category = ['Food','Entertainment','Bill','Others'];
   double _total = 0;
-
-  void _addExpense(String title,double amount,DateTime date,String category){
+  
+  void _addExpense(String title, double amount, DateTime date, String category){
     setState(() {
       _expense.add(Expense(title: title, amount: amount, date: date, category: category));
       _total += amount;
     });
-}
-
-
- void MySnackbar(message,context){
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(message))
-    );
   }
   void _deleteExpense(int index){
     setState(() {
@@ -35,11 +28,12 @@ class _ExpesetrakarState extends State<Expesetrakar> {
     });
   }
 
-  void _showForm(BuildContext context){
+  void _showFrom(BuildContext context){
     TextEditingController _titleController = TextEditingController();
     TextEditingController _amountController = TextEditingController();
     String selectedCategory = _category.first;
-    DateTime selectedDate = DateTime.now();
+    DateTime selectedTime = DateTime.now();
+
     showModalBottomSheet(context: context,
         builder: (_){
       return Padding(
@@ -50,91 +44,88 @@ class _ExpesetrakarState extends State<Expesetrakar> {
             TextFormField(
               controller: _titleController,
               decoration: InputDecoration(
-                labelText: 'Title'
-              ),
-            ),
-            SizedBox(height: 10,),
+              labelText: 'Title'
+            ),),
             TextFormField(
               controller: _amountController,
-              keyboardType: TextInputType.number,
               decoration: InputDecoration(
-                labelText: 'Amount'
-              ),
-            ),
-            SizedBox(height: 10,),
-            DropdownButtonFormField(items: _category.map((category)=>DropdownMenuItem(value: category,child: Text(category))).toList(),
-                onChanged: (value)=>selectedCategory =value!,
-            decoration: InputDecoration(labelText: 'Category'),
-            ),
+              labelText: 'Amount'
+            ),),
+
+            DropdownButtonFormField(items: _category.map((category)=>DropdownMenuItem(value: category,child: Text(category),)).toList() ,
+                onChanged:(value)=> selectedCategory =value! ,decoration: InputDecoration(labelText: 'Category'),),
+              
             SizedBox(height: 20,),
             ElevatedButton(onPressed: (){
               Navigator.pop(context);
-              if(_titleController.text.isEmpty || double.tryParse(_amountController.text) == null ) {
-                 MySnackbar('Empty value not allow', context);
+              if(_titleController.text.isEmpty || double.tryParse(_amountController.text) == null){
+
               }
-              _addExpense(_titleController.text, double.parse(_amountController.text), selectedDate, selectedCategory);
+              _addExpense(_titleController.text, double.parse(_amountController.text), selectedTime, selectedCategory);
               _titleController.clear();
               _amountController.clear();
-            },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.grey[850]
-                ),
-                child: Text('Add Expense'))
+            }, child: Text("Add Expense"))
           ],
         ),
       );
         });
   }
 
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
+      appBar: AppBar(title: Text('Your Cost'),
+      backgroundColor: Colors.grey[800],
         centerTitle: true,
-        backgroundColor: Colors.grey[850],
-        title: Text("Your Cost's"),
-      actions: [
-        IconButton(onPressed: ()=>_showForm(context), icon: Icon(Icons.add))
-      ],
-      ),
-      body: Column(
-        children: [
-          Center(
-            child: Card(
-              margin: EdgeInsets.all(20),
-              color: Colors.grey[800],
-              child: Padding(
-                padding: const EdgeInsets.all(16),
-                child: Text("Total: \$${_total}",style: TextStyle(fontSize: 20),),
-              ),
-            ),
-          ),
-          SizedBox(height: 10,),
-          Expanded(
-            child: ListView.builder(
-              itemCount: _expense.length,
-                itemBuilder: (context,index){
-                  return Dismissible(
-                    key: Key(_expense[index].hashCode.toString()),
-                    background: Container(color: Colors.red,),
-                    onDismissed: (direction)=>_deleteExpense(index),
-                    child: Card(
-                      child: ListTile(
-                        leading: CircleAvatar(backgroundColor: Colors.blueAccent,
-                        child: Text(_expense[index].category),),
-                        title: Text(_expense[index].title),
-                        subtitle: Text(
-                            DateFormat.yMMMd().format(_expense[index].date)),
-                        trailing: Text(_expense[index].amount.toString(),style: TextStyle(fontSize: 15),),
-                      ),
-
-                    ),
-                  );
-                }),
-          )
+        actions: [
+          IconButton(onPressed: ()=>_showFrom(context), icon: Icon(Icons.add))
         ],
       ),
-      floatingActionButton: FloatingActionButton(onPressed: ()=>_showForm(context),child: Icon(Icons.add),backgroundColor: Colors.grey[850],),
+      
+      body: Center(
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(20),
+              child: Container(
+                decoration: BoxDecoration(
+                    color: Colors.grey[800],
+                    borderRadius: BorderRadius.circular(20)
+                ),
+                padding: EdgeInsets.all(20),
+                child: Text('Total: \৳ ${_total}',style: TextStyle(fontSize: 20),),
+              ),
+            ),
+            
+            Expanded(
+              child: ListView.builder(
+                  itemCount: _expense.length,
+                  itemBuilder: (context, index){
+                    return Card(
+                      child: Column(
+                        children: [
+                          ListTile(
+                            leading: CircleAvatar(
+                              backgroundColor: Colors.grey[900],
+                              child: Text(_expense[index].category),
+                            ),
+                            title: Text(_expense[index].title),
+                            subtitle: Text(DateFormat.yMMMd().format(_expense[index].date )),
+                            trailing: Text(_expense[index].amount.toString()),
+                          ),
+                        ],
+                      ),
+                    );
+                  }),
+            )
+          ],
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(onPressed: ()=>_showFrom(context),
+        backgroundColor: Colors.grey[800],
+        child: Icon(Icons.add),),
     );
   }
 }
